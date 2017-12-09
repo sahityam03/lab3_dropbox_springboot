@@ -1,0 +1,12 @@
+ db.persons.update({username: 'x1'}, {$addToSet: {files:{$each: [{filename: 'file1', filepath: 'y1', deleted: false, starred:false}]}}});
+db.persons.update({username: 'x1'}, {$addToSet: {folders: {$each: [{foldername: 'folder1', deleted: false, starred: false}]}}});
+
+db.persons.update({username: 'x1'}, {$addToSet: {folders: {$each: [{foldername: 'folder1', deleted: false, starred: false, {$addToSet: {files: {$each: [{filename: 'ffile1', filepath: 'ff1', deleted : false, starred: false}]}}}}
+]}}});
+
+db.persons.update({username: 'x1', 'folders.foldername': 'folder1'}, {$set: {'folders.$.deleted' : true}});
+
+db.persons.update({username:'x1', 'folders.foldername': 'folder1'}, {$addToSet: {'folders.$.files': {$each: [{filename : 'file1', deleted: false}]}}});
+
+db.persons.update({username:'x1', 'folders.foldername': 'folder1', 'folders.$.files.filename': 'file1'}, {$set: {'folders.$.$.deleted' : true}});
+
