@@ -18,7 +18,7 @@ class Deletedfiles extends Component {
     handleSignOut = () => {
         API.doSignOut()
             .then((status) => {
-                if (status === 201) {
+                if (status === 200) {
                     history.push('/');
                     
                 } else if (status === 401) {

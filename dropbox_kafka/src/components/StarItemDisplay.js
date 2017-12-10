@@ -16,9 +16,9 @@ class StarItemDisplay extends Component {
 
   
 
-  changeStarStatus = (filename, filepath) => {
+  changeStarStatus = (fileid) => {
     var status;
-      if(document.getElementById(filename).checked)
+      if(document.getElementById(fileid).checked)
       {
         console.log("iam in if condition of starr");
         status = 'Y';
@@ -28,9 +28,10 @@ class StarItemDisplay extends Component {
         status = 'N';
       }
 
-        API.changeStar(filename, filepath, status)
+        API.changeStar(id, status)
             .then((status) => {
-                if (status === 201) {
+                if (status === 200) {
+                  this.props.getAllStarFiles();
                   this.props.getAllStarFiles();
                     history.push('/HomePage');
                     
@@ -76,10 +77,10 @@ class StarItemDisplay extends Component {
                                       <tr style={{'border':'1px solid lightblue', 'width':'650px', 'height':'60px'}}>
                                       <td style={{'width':'50px'}}>
                                       {file.starred == 'Y' ? 
-                                      <input  className="star1" type="checkbox" id ={file.filename} checked
-                                      onClick = {() => { this.changeStarStatus(file.filename, file.filepath)}} />
+                                      <input  className="star1" type="checkbox" id ={file.id} checked
+                                      onClick = {() => { this.changeStarStatus(file.id)}} />
                                       :
-                                      <input  className="star1" type="checkbox" id ={file.filename}
+                                      <input  className="star1" type="checkbox" id ={file.id}
                                       onClick = {() => { this.changeStarStatus(file.id)}} />
                                       }
                                       </td>

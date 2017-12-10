@@ -68,10 +68,10 @@ class AllFiles extends Component {
     }
 
 
-    handleDeleteFile = (name, path) => {
-        API.changeDeleteStatus(name, path)
+    handleDeleteFile = (id) => {
+        API.changeDeleteStatus(id)
             .then((status) => {
-                if (status === 201) {
+                if (status === 200) {
                     history.push('/FilesPage');
                     this.props.getAllFiles();
                     
@@ -88,9 +88,9 @@ class AllFiles extends Component {
 
   };*/
 
-  changeStarStatus = (filename, filepath) => {
+  changeStarStatus = (fileid) => {
     var status;
-      if(document.getElementById(filename).checked)
+      if(document.getElementById(fileid).checked)
       {
         console.log("iam in if condition of starr");
         status = 'Y';
@@ -100,10 +100,11 @@ class AllFiles extends Component {
         status = 'N';
       }
 
-        API.changeStar(filename, filepath, status)
+        API.changeStar(fileid, status)
             .then((status) => {
-                if (status === 201) {
+                if (status === 200) {
                   this.props.getAllFiles();
+                  this.props.getAllStarFiles();
                     history.push('/FilesPage');
                     
                 } else if (status === 401) {
@@ -163,10 +164,10 @@ class AllFiles extends Component {
 
                                         {file.starred == 'Y' ? 
                                         <input  className="star1" type="checkbox" id ={file.filename} checked
-                                        onClick = {() => { this.changeStarStatus(file.filename, file.filepath)}} />
+                                        onClick = {() => { this.changeStarStatus(file.id)}} />
                                         :
                                         <input  className="star1" type="checkbox" id ={file.filename}
-                                        onClick = {() => { this.changeStarStatus(file.filename, file.filepath)}} />
+                                        onClick = {() => { this.changeStarStatus(file.id)}} />
                                         }
                                         </td>
                                         <td style={{'width':'50px'}}>
@@ -197,7 +198,7 @@ class AllFiles extends Component {
                                                 <button
                                                   className="btn btn-primary btn-lg"
                                                     onClick={() => {
-                                                                       this.handleDeleteFile(file.filename, file.filepath);
+                                                                       this.handleDeleteFile(file.id);
                                                                   }}
                                                         >Delete</button>
                                            

@@ -5,7 +5,7 @@ const headers = {
 };
 
 export const getMe = () =>
-    fetch(`${api}/users/getMe`, {
+    fetch(`${api}/user/getMe`, {
         credentials: 'include',
         method: 'GET',
         headers: {
@@ -13,7 +13,7 @@ export const getMe = () =>
             'Content-Type': 'application/json'
         }
     }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.json();
         }
@@ -43,17 +43,17 @@ export const doAboutEdit = (payload) =>
             return error;
         });
 
-export const changeDeleteStatus = (name, path) =>
-    fetch(`${api}/users/changeDeleteStatus`, {
+export const changeDeleteStatus = (id) =>
+    fetch(`${api}/user/changeDeleteStatus`, {
         credentials: 'include',
         method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: '{ "filename" : '+JSON.stringify(name)+', "filepath" : '+JSON.stringify(path)+'}'
+        body: '{ "id" : '+JSON.stringify(id)+ '}'
     }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.status;
         }
@@ -63,17 +63,17 @@ export const changeDeleteStatus = (name, path) =>
             return error;
         });
 
-export const changeStar = (name, path, status) =>
-    fetch(`${api}/users/changeStars`, {
+export const changeStar = (id, status) =>
+    fetch(`${api}/user/changeStars`, {
         credentials: 'include',
         method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: '{ "filename" : '+JSON.stringify(name)+' , "filepath" : '+JSON.stringify(path)+' , "status" : '+JSON.stringify(status)+'}'
+        body: '{ "id" : '+JSON.stringify(id)+' , "status" : '+JSON.stringify(status)+'}'
     }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.status;
         }
@@ -133,7 +133,7 @@ export const doSignOut = () =>
             'Content-Type': 'application/json'
         }
      }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.status;
         }

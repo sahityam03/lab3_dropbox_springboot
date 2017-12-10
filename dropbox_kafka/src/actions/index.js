@@ -124,24 +124,6 @@ export function handleSubmit(userdata) {
       });
   }
 }
-/*export const handleSubmit = (payload) =>
-    fetch(`${api}/user/login`, {
-        method: 'POST',
-        headers: {
-            ...headers,
-            'Content-Type': 'application/json'
-        },
-        credentials:'include',
-        body: JSON.stringify(payload)
-    }).then(res => {
-        console.log("this is response in login");
-        console.log(res);
-        return res.status;
-    })
-        .catch(error => {
-            console.log("This is error");
-            return error;
-        });*/
 
 export function handleSignUp(signupdata) {
     //console.log("this is in handle submit" + JSON.stringify(this));
@@ -276,8 +258,6 @@ export function getAllFiles(path, dir) {
 */
 
 export function getAllRecentFiles() {
-  //const payload = new FormData();
-  //payload.append('myfile', filedata.fileHandle);
   /*console.log("in getALlRecentFiles");
    
   return dispatch => {
@@ -318,109 +298,85 @@ export function getAllRecentFiles() {
 
 export function getAllDeletedFiles() {
   console.log("in getAllDeletedFiles");
-   
- /* return dispatch => {
-
-         
-    return fetch(`${api}/users/getDeletedFiles`, {
+   return dispatch => {     
+    return fetch(`${api}/user/getDeletedFiles`, {
         method: 'GET',
         credentials : 'include'
-        
-        
-    })
+        })
       .then(response => 
        {    
             console.log("this is response "+ JSON.stringify(response));
-            console.log(response[0]);
-            if (response.status === 201) { 
-
+            //console.log(response[0]);
+            if (response.status === 200) { 
+              console.log("in status 200 in get deleted files");
               return response.json();
-                                 
-            }
+           }
         })
       .then(file =>
       {    
         console.log("this is not strigified" + file);
         console.log("this is stringified " + JSON.stringify(file));
-           dispatch(displayDeletedFiles(file.files));
+           dispatch(displayDeletedFiles(file));
            history.push('/Deletedfiles');
       })
-  }*/
+  }
 }
 
 
 export function getAllStarFiles() {
-  //const payload = new FormData();
-  //payload.append('myfile', filedata.fileHandle);
-  console.log("in getALlStarFiles");
-   
-  /*return dispatch => {
-
-         
-    return fetch(`${api}/users/getStarFiles`, {
+  //console.log("in getALlStarFiles");
+return dispatch => {
+    return fetch(`${api}/user/getStarFiles`, {
         //credentials : 'include',
         method: 'GET',
         credentials : 'include'
-        
-        
     })
       .then(response => 
        {    
             console.log("this is response "+ JSON.stringify(response));
-            console.log(response[0]);
-            if (response.status === 201) { 
-
+            //console.log(response[0]);
+            if (response.status === 200) { 
+                console.log("in status 200 in getstar files");
               return response.json();
-                
-                 
-            }
+       }
         })
       .then(file =>
       {    
         console.log("this is not strigified" + file);
         console.log("this is stringified " + JSON.stringify(file));
         //console.log("in then of recent files" + file.JSON);
-
-           dispatch(displayStarFiles(file.files));
+        dispatch(displayStarFiles(file));
            history.push('/HomePage');
       })
-  }*/
+  }
 }
+
 
 export function getAllSharedFiles() {
   //const payload = new FormData();
   //payload.append('myfile', filedata.fileHandle);
   console.log("in getALlSharedFiles");
-   
- /* return dispatch => {
-
-         
-    return fetch(`${api}/users/getSharedFiles`, {
+return dispatch => {
+  return fetch(`${api}/user/getSharedFiles`, {
         //credentials : 'include',
         method: 'GET',
         credentials : 'include'
-        
-        
-    })
+       })
       .then(response => 
        {    
             console.log("this is response "+ JSON.stringify(response));
-            console.log(response[0]);
-            if (response.status === 201) { 
-
+            //console.log(response[0]);
+            if (response.status === 200) { 
+              console.log("in status 200 in getshared files");
               return response.json();
-                
-                 
             }
         })
       .then(file =>
       {    
         console.log("this is not strigified" + file);
         console.log("this is stringified " + JSON.stringify(file));
-        //console.log("in then of recent files" + file.JSON);
-
-           dispatch(displaySharedFiles(file.files));
+        dispatch(displaySharedFiles(file));
            history.push('/HomePage');
       })
-  }*/
+  }
 }
