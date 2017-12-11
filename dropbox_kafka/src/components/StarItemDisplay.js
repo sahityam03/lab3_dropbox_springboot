@@ -28,7 +28,7 @@ class StarItemDisplay extends Component {
         status = 'N';
       }
 
-        API.changeStar(id, status)
+        API.changeStar(fileid, status)
             .then((status) => {
                 if (status === 200) {
                   this.props.getAllStarFiles();

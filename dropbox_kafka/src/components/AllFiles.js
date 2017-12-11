@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 
 import { Route, withRouter } from 'react-router-dom';
-import {getAllFiles} from "../actions/index";
+import {getAllFiles, getAllStarFiles} from "../actions/index";
 import { history } from '../helpers1/history1';
 import * as API from '../api/API';
 
@@ -25,7 +25,7 @@ class AllFiles extends Component {
       console.log("event --> "+event.target.id);
       //this.refs.filepath.value = filepath;
       this.refs.shareFolder.style="display: inline-block, 'position': 'fixed', 'width':'250px', 'height': '150px','border':'5px solid blue', 'margin-left':'-155px', 'margin-top':'-110px', 'top': '50%', 'left':'50%', 'padding':'30px'";
-      this.refs.filename.value = event.target.id;
+      this.refs.fileId.value = event.target.id;
 
     }
 
@@ -33,19 +33,19 @@ class AllFiles extends Component {
       console.log(" folder added");
       //this.refs.newFolderField.type='hidden';
       const emailIds = this.refs.sharefield.value;
-      const filename = this.refs.filename.value;
+      const fileid = this.refs.fileId.value;
 
 
       console.log("###### emailIds are : " + emailIds);
       console.log("###### emailIds are : " + emailIds.length);
-      console.log("###### Filename are : " + filename);
+      console.log("###### Filename are : " + fileid);
 
       if(emailIds.length > 0) {
           //API call
           this.refs.sharefield.value = '';
-          this.refs.filename.value = '';
+          this.refs.fileId.value = '';
           this.refs.shareFolder.style="display: none";
-          API.sharedocument(emailIds, filename, this.props.path)
+          API.sharedocument(emailIds, fileid)
               .then((status) => {
                 if (status === 201) {
                     history.push('/FilesPage');
@@ -103,8 +103,8 @@ class AllFiles extends Component {
         API.changeStar(fileid, status)
             .then((status) => {
                 if (status === 200) {
-                  this.props.getAllFiles();
-                  this.props.getAllStarFiles();
+                  this.props.getAllFiles(null, null);
+                  //this.props.getAllStarFiles();
                     history.push('/FilesPage');
                     
                 } else if (status === 401) {
@@ -114,17 +114,7 @@ class AllFiles extends Component {
     };
 
   componentDidMount(){
-        //console.log("this is username from stateto props "+ this.props.username);
-
-        //var oripath = this.props.path+'/'+this.props.username;
-        //console.log("this is oripath "+ oripath);
-        /*this.setState({
-            filename: '',
-            filepath: '',
-             
-        });*/
         this.props.getAllFiles(null, null);
-
     }
 
     render() {
@@ -141,106 +131,81 @@ class AllFiles extends Component {
         //console.log(fArr);
 
         return (
-            
-                
-                    <div style={{'width':'500px', 'height':'50px'}}>
-
-                   
-                  {
-
-                      fArr.map((file,index) => {
-                                    
-                                    return(
-                                      <div>
-                                      
-                                      <div>
-                                      
-                                      
-                                      <table style={{ 'width':'875px'}}>
-                                        <tbody>
-
-                                        <tr style={{'border':'1px solid lightblue', 'width':'650px', 'height':'60px'}}>
-                                        <td  style={{'width':'50px'}}>
-
-                                        {file.starred == 'Y' ? 
-                                        <input  className="star1" type="checkbox" id ={file.filename} checked
-                                        onClick = {() => { this.changeStarStatus(file.id)}} />
-                                        :
-                                        <input  className="star1" type="checkbox" id ={file.filename}
-                                        onClick = {() => { this.changeStarStatus(file.id)}} />
-                                        }
-                                        </td>
-                                        <td style={{'width':'50px'}}>
-                                        {file.type == 'folder' ? 
-                                       <a href="#"><span className="glyphicon glyphicon-folder-open" ></span></a>
-                                        :
-                                        <a href="#"><span className="glyphicon glyphicon-file"></span></a>
-                                        }
-                                        </td>
-                                        <td style={{'width':'300px'}}>
-                                        {file.type == 'folder' ?
-                                        <button className= "unstyled-button" onClick={() => {
-                                                                       this.props.getAllFiles(this.props.path+'/'+file.filename, file.filename);
-                                                                  }} > {file.filename} </button>
-                                        :
-
-                                        <a href= {file.filepath + "/"+ file.filename} download> {file.filename}</a>
-                                        }
-                                        </td>
-                                        <td>
-                                        <div className="recents-item__sharing recents-item__action-button">
-                                        <button className="unstyled-button" id={file.filename} onClick={this.popsharewindow}>Share</button>
-                                        </div>
-                                        </td>
-                                        <td >
-                                        
-                                          
-                                                <button
-                                                  className="btn btn-primary btn-lg"
-                                                    onClick={() => {
-                                                                       this.handleDeleteFile(file.id);
-                                                                  }}
-                                                        >Delete</button>
-                                           
-                                      
-                                        </td>
-                                        </tr>
-                                      </tbody>
-                                      </table>
-                                    </div>
-                                    
-    
-                                    <div className="popup" id="shareFolder" style={{'display': 'none', 'position': 'fixed', 'width':'250px', 'height': '150px','border':'5px solid blue', 'margin-left':'-155px', 'margin-top':'-110px', 'top': '50%', 'left':'50%', 'padding':'30px'}} ref="shareFolder">
-                                        <input type="text" style={{'display': 'none'}} ref="filename"/>
-                                        <input type="text"  ref="sharefield"/>
-                                        <br />
-                                        <table>
-                                        <tr>
-                                        <td>
-                                        <a href="#">copylink</a>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td>
-                                        <input id="sharewindowclose" type="Button" value="Share" onClick={this.handleShare}/>
-                                        </td>
-                                        <td>
-                                        <input id = "close" type="Button" value="Close" onClick={this.handleClose}/>
-                                        </td>
-                                        </tr>
-                                        </table>
-      
-                                      </div>
-                                    </div>
-
-                                    );
-                                                                         
-                                })
-                   }
-                    
+          <div style={{'width':'500px', 'height':'50px'}}>
+            {
+              fArr.map((file,index) => {
+                return(
+                    <div>
+                      <div>
+                        <table style={{ 'width':'875px'}}>
+                          <tbody>
+                            <tr style={{'border':'1px solid lightblue', 'width':'650px', 'height':'60px'}}>
+                              <td  style={{'width':'50px'}}>
+                                {file.starred == 'Y' ? 
+                                  <input  className="star1" type="checkbox" id ={file.id} checked
+                                  onClick = {() => { this.changeStarStatus(file.id)}} />
+                                  :
+                                  <input  className="star1" type="checkbox" id ={file.id}
+                                  onClick = {() => { this.changeStarStatus(file.id)}} />
+                                }
+                              </td>
+                              <td style={{'width':'50px'}}>
+                                {file.type == 'folder' ? 
+                                  <a href="#"><span className="glyphicon glyphicon-folder-open" ></span></a>
+                                  :
+                                  <a href="#"><span className="glyphicon glyphicon-file"></span></a>
+                                }
+                              </td>
+                              <td style={{'width':'300px'}}>
+                                {file.type == 'folder' ?
+                                  <button className= "unstyled-button" onClick={() => {
+                                                                 this.props.getAllFiles(this.props.path+'/'+file.filename, file.filename);
+                                                            }} > {file.filename} </button>
+                                  :
+                                  <a href= {file.filepath + "/"+ file.filename} download> {file.filename}</a>
+                                }
+                              </td>
+                              <td>
+                                <div className="recents-item__sharing recents-item__action-button">
+                                <button className="unstyled-button" id={file.id} onClick={this.popsharewindow}>Share</button>
+                                </div>
+                              </td>
+                              <td >
+                                <button
+                                  className="btn btn-primary btn-lg"
+                                    onClick={() => {
+                                                       this.handleDeleteFile(file.id);
+                                                  }}>Delete</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>    
+                      <div className="popup" id="shareFolder" style={{'display': 'none', 'position': 'fixed', 'width':'250px', 'height': '150px','border':'5px solid blue', 'margin-left':'-155px', 'margin-top':'-110px', 'top': '50%', 'left':'50%', 'padding':'30px'}} ref="shareFolder">
+                        <input type="text" style={{'display': 'none'}} ref="fileId"/>
+                        <input type="text"  ref="sharefield"/>
+                        <br />
+                        <table>
+                          <tr>
+                            <td>
+                              <a href="#">copylink</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input id="sharewindowclose" type="Button" value="Share" onClick={this.handleShare}/>
+                            </td>
+                            <td>
+                              <input id = "close" type="Button" value="Close" onClick={this.handleClose}/>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
                     </div>
-               
-           
+                    );
+              })
+            }       
+          </div>
         );
     }
 }
@@ -255,7 +220,7 @@ function mapStateToProps(store1) {
     const fileArr = files.files;
     const path = files.presentpath
     
-    //console.log("this is path in mapstate" + path);
+  console.log("this is path in mapstate" + path);
     //console.log("this is path in mapstate" + username);
   return {fileArr, path};
 }

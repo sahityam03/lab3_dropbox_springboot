@@ -15,12 +15,7 @@ class UploadFile extends Component {
         fileHandle: {},
         path : ''
     };
-  /*componentWillMount(){
-        this.setState({
-            fileName: '',
-        fileHandle: {}
-        });
-    }*/
+
  handleChange = event => {
       this.setState({fileName: event.target.files[0].name});
       this.setState({fileHandle: event.target.files[0]});
@@ -30,27 +25,15 @@ class UploadFile extends Component {
 
 
     render() {
-
-        //const {path} = this.props.path;
-        //console.log(" Props of path "+ JSON.stringify(this.props));
-        //console.log(" Props of path "+ this.props.path);
-        //console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
-        
-
         return (
-              
-                
-                <div className="row justify-content-md-center">
-                    <form encType="multipart/formdata"  onSubmit={() => this.props.handleUploadFile(this.state, this.props.path)}>
-                    <div className="fileUpload">
-                      <input type="file" name= "fileUpload" className="upload"   onChange={this.handleChange}  />
-                      <input type="submit" readOnly className="btn btn-primary btn-lg" value="Upload" />
-                      </div>
-                    </form>
-                    
+          <div className="row justify-content-md-center">
+              <form encType="multipart/formdata"  onSubmit={() => this.props.handleUploadFile(this.state, this.props.path)}>
+              <div className="fileUpload">
+                <input type="file" name= "fileUpload" className="upload"   onChange={this.handleChange}  />
+                <input type="submit" readOnly className="btn btn-primary btn-lg" value="Upload" />
                 </div>
-            
+              </form>
+          </div>
         );
     }
 }

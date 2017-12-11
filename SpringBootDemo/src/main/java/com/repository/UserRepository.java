@@ -2,6 +2,7 @@ package com.repository;
 
 import com.entity.User;
 
+import com.entity.Userdetails;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -10,4 +11,7 @@ import java.util.List;
 
 public interface UserRepository extends CrudRepository<User,  Long> {
     List<User> findByEmailAndPassword(String email,String password);
+
+
+
 }

@@ -11,10 +11,9 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
     private String firstname;
     private String lastname;
-    private String gender;
+    private String username;
     private String email;
     private String password;
 
@@ -34,19 +33,19 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
+    public String getFirstname() {
         return firstname;
     }
 
-    public void setFirstName(String firstname) {
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public String getLastName() {
+    public String getLastname() {
         return lastname;
     }
 
-    public void setLastName(String lastname) {
+    public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
@@ -58,13 +57,23 @@ public class User {
         this.email = email;
     }
 
-    public String getGender() {
-        return gender;
+    public String getUsername() {
+        return username;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

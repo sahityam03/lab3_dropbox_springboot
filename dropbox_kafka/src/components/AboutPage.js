@@ -49,12 +49,12 @@ class AboutPage extends Component {
                 
             this.setState({
 
-                description : data.description,
-                phone : data.phone,
-                country: data.country,
-                work : data.work,
-                education : data.education,
-                interests : data.interests
+                description : data[0].description,
+                phone : data[0].phone,
+                country: data[0].country,
+                work : data[0].work,
+                education : data[0].education,
+                interests : data[0].interests
             });
             }
 

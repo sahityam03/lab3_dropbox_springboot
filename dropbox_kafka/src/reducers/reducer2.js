@@ -8,7 +8,7 @@ import Newpage from "../components/Newpage";
 
 // https://github.com/reactjs/react-redux/blob/d5bf492ee35ad1be8ffd5fa6be689cd74df3b41e/src/components/createConnect.js#L91
 const initialState = {
-          presentpath : 'http://localhost:8080/users_records'
+          presentpath : "./dropbox"
         //fileid: '',
        // filename: '',
         //filetype: '',
@@ -24,12 +24,17 @@ export const files = (state = initialState, action) => {
         console.log("files retrieved and adding to state");
         console.log( action.file);
         var currState = state;
-        
-        //history.push('/Newpage');
+        //let path;
+        //console.log("this is file "+ action.file.length);
+        //if(action.file != 'undefined' && action.file.length > 0)
+        //{
+        //    path = action.file[0].filepath;
+        //}
+
            return {
                ...state,
                "files" : action.file,
-               presentpath : action.file[0].filepath
+               presentpath : action.localpath
            };
 
         case RECENTFILE_SUCCESS :
@@ -37,7 +42,6 @@ export const files = (state = initialState, action) => {
         console.log( action.file);
         var currState = state;
         
-        //history.push('/Newpage');
            return {
                ...state,
                "recentfiles" : action.file
@@ -48,7 +52,6 @@ export const files = (state = initialState, action) => {
         console.log( action.file);
         var currState = state;
         
-        //history.push('/Newpage');
            return {
                ...state,
                "deletedfiles" : action.file

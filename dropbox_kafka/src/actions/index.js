@@ -21,26 +21,32 @@ const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
 
 
 export function signinsuccess(userdata) {
-	               console.log("this is in signIn sucees" + JSON.stringify(userdata));
-                    
-                    return {
-                     type : SIGNIN_SUCCESS,
-                     userdata                                // this is same as newItem : newItem in ES6
-                    }                  
-                
+     console.log("this is in signIn sucees" + JSON.stringify(userdata));
+        
+        return {
+         type : SIGNIN_SUCCESS,
+         userdata                                // this is same as newItem : newItem in ES6
+        }                  
+    
 }
 
-export function displayAllFiles(file) {
-                 console.log("this is in displayAllFiles" );
-                 console.log("this is printing file " + JSON.stringify(file));
-                 
-                    
-                    return {
-                     type : ALLFILE_SUCCESS,
-                     file
-                             // this is same as newItem : newItem in ES6
-                    }                  
-                
+export function displayAllFiles(file, path) {
+   console.log("this is in displayAllFiles" );
+   console.log("this is printing file " + JSON.stringify(file));
+   console.log("peinting path in display files in action "+ path );
+   let localpath = "./dropbox";
+   if(path != null && path != 'undefined')
+      localpath = path;
+   if(file != 'undefined' && file.length > 0)
+      {
+          localpath = file[0].filepath;
+      }
+      return {
+       type : ALLFILE_SUCCESS,
+       file,
+       localpath
+               // this is same as newItem : newItem in ES6
+      }       
 }
 
 export function displayRecentFiles(file) {
@@ -66,37 +72,32 @@ export function displayStarFiles(file) {
 }
 
 export function displaySharedFiles(file) {
-                 console.log("this is in display Shared Files" );
-                 console.log("this is printing file in sharefile " + JSON.stringify(file));
-                 
-                    return {
-                     type : SHAREFILE_SUCCESS,
-                     file                                // this is same as newItem : newItem in ES6
-                    }                  
-                
+     console.log("this is in display Shared Files" );
+     console.log("this is printing file in sharefile " + JSON.stringify(file));
+     
+        return {
+         type : SHAREFILE_SUCCESS,
+         file                                // this is same as newItem : newItem in ES6
+        }
 }
 
 export function displayDeletedFiles(file) {
-                 console.log("this is in displayAllFiles" );
-                 console.log("this is printing file " + JSON.stringify(file));
-                 
-                    
-                    return {
-                     type : DELETEDFILE_SUCCESS,
-                     file                                // this is same as newItem : newItem in ES6
-                    }                  
-                
+       console.log("this is in displayDeletedFiles" );
+       console.log("this is printing file " + JSON.stringify(file));
+          return {
+           type : DELETEDFILE_SUCCESS,
+           file                                // this is same as newItem : newItem in ES6
+          }
 }
 export function updateFileSuccessStatus(filedata) {
-                 //console.log(JSON.stringify(this));
-                 console.log("in uploadfilesuccessstatus");
-                    
-                    return {
-                     type : FILEUPLOAD_SUCCESS,
-                     filedata
-                                                     // this is same as newItem : newItem in ES6
-                    }                  
-                
+     //console.log(JSON.stringify(this));
+     console.log("in uploadfilesuccessstatus");
+        
+        return {
+         type : FILEUPLOAD_SUCCESS,
+         filedata
+                                         // this is same as newItem : newItem in ES6
+        } 
 }
 export function handleSubmit(userdata) {
     //console.log("this is in handle submit" + JSON.stringify(this));
@@ -126,9 +127,9 @@ export function handleSubmit(userdata) {
 }
 
 export function handleSignUp(signupdata) {
-    //console.log("this is in handle submit" + JSON.stringify(this));
+    console.log("this is in handle submit" + JSON.stringify(signupdata));
   return dispatch => {   
-    return fetch(`${api}/users/doSignUp`, {
+    return fetch(`${api}/user/doSignUp`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -147,36 +148,31 @@ export function handleSignUp(signupdata) {
 
 export function handleUploadFile(filedata, path) {
   //console.log("this is path in actions "+ path);
-  /*const payload = new FormData();
+  const payload = new FormData();
   payload.append('myfile', filedata.fileHandle);
   payload.append('filepath', path);
+  console.log("this is filepath in handleuplaod file "+ path)
   console.log("this is filedata" + JSON.stringify(filedata));
-   
-  return dispatch => {
-
-         
-    return fetch(`${api}/users/doUpload`, {
-        
-        method: 'POST',
-
-          credentials : 'include',
-
-        body: payload 
-        
+   return dispatch => {
+  return fetch(`${api}/user/doUpload`, {
+     method: 'POST',
+     credentials : 'include',
+     body: payload 
     })
       .then(response => response.status)
       .then(status => {
-            if (status === 201) { 
-                console.log("in status 201");
+            if (status === 200) { 
+                console.log("in status 200");
                 dispatch(updateFileSuccessStatus(filedata));
                 history.push('/FilesPage');
-                 
-            }
+          }
         })
-  }*/
+  }
 }
+
 export function getAllFiles(path, dir) {
   //console.log("in getALlFiles");
+  console.log("in get all files "+ path);
    return dispatch => {
      return fetch(`${api}/user/getFiles`, {
         
@@ -198,10 +194,10 @@ export function getAllFiles(path, dir) {
         })
       .then(file =>
       {    
-        console.log("this is not strigified" + file);
         console.log("this is stringified " + JSON.stringify(file));
+        console.log("this is path in getallfiles action "+ path);
         //console.log("in then of recent files" + file.JSON);
-           dispatch(displayAllFiles(file));
+           dispatch(displayAllFiles(file, path));
            history.push('/FilesPage');
       })
   }
@@ -258,30 +254,22 @@ export function getAllFiles(path, dir) {
 */
 
 export function getAllRecentFiles() {
-  /*console.log("in getALlRecentFiles");
-   
+console.log("in getALlRecentFiles");
   return dispatch => {
-
-         
-    return fetch(`${api}/users/getRecentFiles`, {
+    return fetch(`${api}/user/getRecentFiles`, {
         //credentials : 'include',
         method: 'GET',
         credentials : 'include'
-        
-        
-    })
+   })
       .then(response => 
        {    
             console.log("this is response "+ JSON.stringify(response));
             console.log(response[0]);
-            if (response.status === 201) { 
+            if (response.status === 200) { 
 
               return response.json();
                 //console.log("in status 201");
-                
-                //dispatch(displayRecentFiles(filedata));
-               // history.push('/HomePage');
-                 
+   
             }
         })
       .then(file =>
@@ -289,11 +277,10 @@ export function getAllRecentFiles() {
         console.log("this is not strigified" + file);
         console.log("this is stringified " + JSON.stringify(file));
         //console.log("in then of recent files" + file.JSON);
-
-           dispatch(displayRecentFiles(file.files));
+         dispatch(displayRecentFiles(file));
            history.push('/HomePage');
       })
-  }*/
+  }
 }
 
 export function getAllDeletedFiles() {

@@ -17,7 +17,7 @@ class FilesPage extends Component {
     handleSignOut = () => {
         API.doSignOut()
             .then((status) => {
-                if (status === 201) {
+                if (status === 200) {
                     history.push('/');
                     
                 } else if (status === 401) {
@@ -48,7 +48,7 @@ class FilesPage extends Component {
             console.log(" this is props path "+ this.props.path);
             API.addFolder(foldervalue, this.props.path)
                 .then((status) => {
-                if (status === 201) {
+                if (status === 200) {
                     history.push('/FilesPage');
                     //this.props.getAllFiles();
                     
@@ -66,10 +66,7 @@ class FilesPage extends Component {
         
         return (
             <div className="container-fluid">
-            
                 <div className = "row">
-            
-                
                     <div className="col-md-2 sidenav hidden-xs sidebar" style={{'backgroundColor': 'lightblue', 'height': '100vh'}}>
                         <br />
                         <h3 className="text-center">Files</h3>
@@ -104,13 +101,8 @@ class FilesPage extends Component {
                         </tbody>
                         </table>
                         </div>
-                       
                        <div>
-                          
-
-                       
                           <AllFiles />
-                       
                        </div>
                     </div>
                     <div className = "col-md-2 col-md-offset-3"  style={{'backgroundColor': 'lightblue', 'height': '100vh'}}>
@@ -133,10 +125,6 @@ class FilesPage extends Component {
                         <ul className = "nav nav-list">
                             <li><button className="unstyled-button" onClick={this.createFolder}>New folder</button></li>
                         </ul>
-
-                        
-                                        
-                    
                         </div>
                     </div>
             

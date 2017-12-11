@@ -15,6 +15,7 @@ export const getMe = () =>
     }).then(res => {
         if(res.status === 200)
         { 
+            console.log("this is in getme "+ JSON.stringify(res));
         return res.json();
         }
     })
@@ -24,7 +25,7 @@ export const getMe = () =>
         });
 
 export const doAboutEdit = (payload) =>
-    fetch(`${api}/users/doAboutEdit`, {
+    fetch(`${api}/user/doAboutEdit`, {
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -33,7 +34,7 @@ export const doAboutEdit = (payload) =>
         },
         body: JSON.stringify(payload)
     }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.status;
         }
@@ -83,17 +84,17 @@ export const changeStar = (id, status) =>
             return error;
         });
 
-export const sharedocument = (emailids, filename, filepath) =>
-    fetch(`${api}/users/sharedocument`, {
+export const sharedocument = (emailids, fileid) =>
+    fetch(`${api}/user/sharedocument`, {
         credentials: 'include',
         method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: '{ "filename" : '+JSON.stringify(filename)+' , "filepath" : '+JSON.stringify(filepath)+' , "emailids" : '+JSON.stringify(emailids)+'}'
+        body: '{ "id" : '+JSON.stringify(fileid)+' , "emailids" : '+JSON.stringify(emailids)+'}'
     }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.status;
         }
@@ -104,7 +105,7 @@ export const sharedocument = (emailids, filename, filepath) =>
         });
 
 export const addFolder = (foldername, folderpath) =>
-    fetch(`${api}/users/createFolder`, {
+    fetch(`${api}/user/createFolder`, {
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -113,7 +114,7 @@ export const addFolder = (foldername, folderpath) =>
         },
         body: '{ "foldername" : '+JSON.stringify(foldername)+' , "path" : '+JSON.stringify(folderpath)+' }'
     }).then(res => {
-        if(res.status === 201)
+        if(res.status === 200)
         { 
         return res.status;
         }
@@ -125,7 +126,7 @@ export const addFolder = (foldername, folderpath) =>
 
 
 export const doSignOut = () =>
-    fetch(`${api}/logout`, {
+    fetch(`${api}/user/logout`, {
         credentials: 'include',
         method: 'POST',
         headers: {

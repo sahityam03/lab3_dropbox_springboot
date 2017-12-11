@@ -1,0 +1,58 @@
+1) cmd -> zkserver
+2) in kafka installation folder 
+   shift -> right click -> open new command window
+   .\bin\windows\kafka-server-start.bat .\config\server.properties
+3) creating topic  
+    in another cmd bin/windows
+   kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+4) to producer
+   in another cmd
+   kafka-console-producer.bat --broker-list localhost:9092 --topic test
+5) consumer
+    in another cmd
+   kafka-console-consumer.bat --zookeeper localhost:2181 --topic test
+
+
+
+router.post('/doUpload', upload.single('myfile'), function (req, res, next) {
+	var requsername = req.session.user;
+	var reqFileName = req.file.filename;
+	console.log("this is file name " + reqFileName);
+	   
+    var path = process.cwd();
+    console.log("this is path from process.cwd" + path);
+    var originpath='./public/users_records/' + requsername + '/' + reqFileName ;
+    console.log("original path printing "+ originpath);
+    
+   // fs.move('./public/users_records/temp/' + reqFileName , './public/users_records/'+requsername+'/'+reqFileName);
+    var reqfilepath = "'http://localhost:3001/users_records/"+requsername+ "/"+reqFileName+"'";
+    console.log("this is buffer of file");
+    console.log(req.file.buffer.toString());
+    console.log("##################");
+    console.log(req.file);
+    console.log("##################");
+    console.log("the file path is "+ reqfilepath);
+    
+    kafka.make_request('fileupload_topic',{"username":requsername, "filename" : reqFileName, "filepath" : reqfilepath }, function(err,results){
+		console.log("in kafka make request in fileupload router");
+		console.log('in result');
+		console.log(results);
+		if(err){
+	        throw err;
+	    }
+		else
+	    {
+	        if(results.code == 200){
+	        	console.log("file details updated in mongodb");
+	        	return res.status(201).json({message: "upload successful"});
+	        }
+	        else {
+	        	console.log("upload unsuccessful");
+	        	return res.status(401).json({message: "upload unsuccessful"});
+	        }
+	    }
+    });
+});
+
+
+db.users.aggregate({ $match : {username : msg.username , 'files.filepath' : 'http://localhost:3001/sahitya' }},  { $unwind : '$files' },   {$match : {'files.filepath' : 'http://localhost:3001/sahitya' }});

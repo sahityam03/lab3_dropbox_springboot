@@ -16,5 +16,9 @@ import java.util.List;
 
 public interface FileRepository extends CrudRepository<File,  Long>
 {
-    List<File> findByFilepath(@Param("filepath") String filepath);
+    File findById(@Param("id") int id);
+    List<File> findByFilepathAndDeleted(@Param("filepath") String filepath, @Param("deleted") String deleted);
+    List<File> findByEmailAndStarredAndDeleted(@Param("email") String email, @Param("starred") String starred, @Param("deleted") String deleted);
+    List<File> findByEmailAndDeleted(@Param("email") String email, @Param("deleted") String deleted);
+    List<File> findByEmailAndDeletedAndShared(@Param("email") String email, @Param("deleted") String deleted, @Param("shared") String shared );
 }
