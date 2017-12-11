@@ -309,6 +309,10 @@ export function getAllDeletedFiles() {
   }
 }
 
+export function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
+}
 
 export function getAllStarFiles() {
   //console.log("in getALlStarFiles");
@@ -367,3 +371,66 @@ return dispatch => {
       })
   }
 }
+
+
+export function saveTextAsFile(content, fname)
+{
+    var textToWrite = content;
+    var textFile = new Blob([textToWrite], {type:'text/plain'});
+    var fileName = fname;
+      var downloadLink = document.createElement("a");
+    downloadLink.download = fileName;
+    downloadLink.innerHTML = "Download File";
+    if (window.webkitURL != null)
+    {
+        downloadLink.href = window.URL.createObjectURL(textFile);
+    }
+    else
+    {
+        downloadLink.href = window.URL.createObjectURL(textFile);
+        downloadLink.onclick = destroyClickedElement();
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+    }
+
+    downloadLink.click();
+}
+
+export function downloadFile(path, filename) {
+  console.log("this is path passed " + path);
+   path = path +"/"+ filename ;
+   console.log("this is path in downlaod file efunction " + path);
+
+   return dispatch => {    
+    return fetch(`${api}/user/downloadfile`, { 
+        method: 'POST',
+        credentials : 'include',
+        headers:{
+         'Content-Type': 'application/json'
+        },
+        body : JSON.stringify({path})
+    })
+      .then(
+        response => {    
+          console.log(response);
+          if (response.status === 200) { 
+            return response.text();
+          }
+          else{
+            return Promise.reject("Operation failed");
+          }
+        },
+        error => { return Promise.reject("No Response from Server"); }
+       )
+      .then(message => {
+        console.log(message);
+        saveTextAsFile(message, filename);
+      },
+      error => {
+        console.log("Error occurred");
+      })
+  }
+}
+
+
+

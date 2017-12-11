@@ -1,6 +1,7 @@
 package com.controller;
 import com.entity.File;
 import com.service.FileService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -218,5 +222,21 @@ public class FileController {
         //return fileService.getFiles(jsonObject.getString("path"));
     }
 
+    @PostMapping("/downloadfile")
+    public ResponseEntity<?> downloadfile(@RequestBody String filepath, HttpSession session, HttpServletResponse response) {
+        System.out.println(filepath);
+        JSONObject jsonObject = new JSONObject(filepath);
+        System.out.println(jsonObject.getString("path"));
+        Path downloadfilePath = Paths.get(jsonObject.getString("path"));
+        System.out.println(downloadfilePath.toAbsolutePath().normalize());
 
+        try {
+            InputStream is = new FileInputStream(downloadfilePath.toAbsolutePath().normalize().toString());
+            IOUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
 }

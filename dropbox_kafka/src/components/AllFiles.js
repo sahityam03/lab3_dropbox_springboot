@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 
 import { Route, withRouter } from 'react-router-dom';
-import {getAllFiles, getAllStarFiles} from "../actions/index";
+import {getAllFiles, getAllStarFiles, downloadFile} from "../actions/index";
 import { history } from '../helpers1/history1';
 import * as API from '../api/API';
 
@@ -162,7 +162,7 @@ class AllFiles extends Component {
                                                                  this.props.getAllFiles(this.props.path+'/'+file.filename, file.filename);
                                                             }} > {file.filename} </button>
                                   :
-                                  <a href= {file.filepath + "/"+ file.filename} download> {file.filename}</a>
+                                  <button className= "unstyled-button" onClick={() => {this.props.downloadFile(file.filepath, file.filename); }}>{file.filename}</button>
                                 }
                               </td>
                               <td>
@@ -228,7 +228,8 @@ function mapStateToProps(store1) {
 function mapDispatchToProps(dispatch) {
   console.log("Iam in maptoDispatch");
    return {
-       getAllFiles : (x, y) => dispatch(getAllFiles(x, y))
+       getAllFiles : (x, y) => dispatch(getAllFiles(x, y)),
+       downloadFile: (x,y) => dispatch(downloadFile(x,y))
     };
 }
 
