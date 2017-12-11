@@ -97,6 +97,20 @@ public class FileServiceTest {
 
         Mockito.when(fileRepository.findByEmailAndDeleted("abc@gmail.com","Y"))
                 .thenReturn(deletedFiles);
+
+        File file6 = new File();
+        file6.setEmail("abc@gmail.com");
+        file6.setFilename("Mango.txt");
+        file6.setFilepath("./Springboot/abc@gmail.com");
+        file6.setModifiedtime();
+        file6.setType("file");
+        file6.setShared();
+        file6.setDeleted("N");
+        List<File> sharedFiles = new ArrayList<>();
+        sharedFiles.add(file6);
+
+        Mockito.when(fileRepository.findByEmailAndDeletedAndShared("abc@gmail.com","N", "Y"))
+                .thenReturn(sharedFiles);
     }
 
     @Test
@@ -119,7 +133,25 @@ public class FileServiceTest {
 
     @Test
     public void getDeletedFilesTest() {
-        List<File> found = fileService.getStarFiles("abc@gmail.com");
+        List<File> found = fileService.getDeletedFiles("abc@gmail.com");
         assertThat(found.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void getSharedFilesTest() {
+        List<File> found = fileService.getSharedFiles("abc@gmail.com");
+        assertThat(found.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void getSharedFilesFailureTest() {
+        List<File> found = fileService.getSharedFiles("xyz@gmail.com");
+        assertThat(found).isEmpty();
+    }
+
+    @Test
+    public void getDeletedFilesFailureTest() {
+        List<File> found = fileService.getDeletedFiles("xyz@gmail.com");
+        assertThat(found).isEmpty();
     }
 }

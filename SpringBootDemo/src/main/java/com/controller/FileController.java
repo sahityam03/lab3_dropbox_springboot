@@ -224,13 +224,9 @@ public class FileController {
 
     @PostMapping("/downloadfile")
     public ResponseEntity<?> downloadfile(@RequestBody String filepath, HttpSession session, HttpServletResponse response) {
-        System.out.println(filepath);
         JSONObject jsonObject = new JSONObject(filepath);
-        System.out.println(jsonObject.getString("path"));
         Path downloadfilePath = Paths.get(jsonObject.getString("path"));
-        System.out.println(downloadfilePath.toAbsolutePath().normalize());
-
-        try {
+         try {
             InputStream is = new FileInputStream(downloadfilePath.toAbsolutePath().normalize().toString());
             IOUtils.copy(is, response.getOutputStream());
             response.flushBuffer();
