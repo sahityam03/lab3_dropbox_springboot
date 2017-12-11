@@ -4,6 +4,8 @@ import com.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,6 +18,9 @@ public class FileService {
     /*public Iterable<File> getAllFiles(){
         return fileRepository.findByEmail(email);
     }*/
+
+
+
     public Iterable<File> getAllFiles(){
         return fileRepository.findAll();
     }

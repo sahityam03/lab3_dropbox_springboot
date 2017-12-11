@@ -10,19 +10,12 @@ public class Userdetails {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
     private String email;
-
     private String description;
-
     private String phone;
-
     private String country;
-
     private String work;
-
     private String education;
-
     private String interests;
 
     public String getEmail() {
